@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nftviewer/static/css/main.073c9b0a.css",
+    "main.js": "/nftviewer/static/js/main.9dae2800.js",
+    "static/js/787.c0598c1b.chunk.js": "/nftviewer/static/js/787.c0598c1b.chunk.js",
+    "index.html": "/nftviewer/index.html",
+    "main.073c9b0a.css.map": "/nftviewer/static/css/main.073c9b0a.css.map",
+    "main.9dae2800.js.map": "/nftviewer/static/js/main.9dae2800.js.map",
+    "787.c0598c1b.chunk.js.map": "/nftviewer/static/js/787.c0598c1b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.9dae2800.js"
+  ]
+}
