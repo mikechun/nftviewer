@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
+import pThrottle from 'p-throttle';
 
 const API_KEY = 'U42YTQClHQMz1dRyy087pHijX8I2-VTC';
 
@@ -13,13 +14,16 @@ declare global {
 
 //dummy wallet address = 0xeb834ae72b30866af20a6ce5440fa598bfad3a42;
 
-//const web3 = createAlchemyWeb3(`https://eth-mainnet.alchemyapi.io/${API_KEY}`);
 const web3 = createAlchemyWeb3(
   `wss://eth-mainnet.ws.alchemyapi.io/ws/${API_KEY}`,
 );
+const now = Date.now();
+const throttle:any = pThrottle({
+  limit: 5,
+  interval: 1000
+});
 
 function App() {
-
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [nfts, setNfts] = useState<any[]>([]);
@@ -43,7 +47,7 @@ function App() {
       const address = val.contract.address;
       const tokenId = val.id.tokenId;
       getNftMeta(address, tokenId)
-      .then(meta => {
+      .then((meta:any) => {
         setNfts(prevValues => [...prevValues, meta])
       })
     }
@@ -89,6 +93,8 @@ function App() {
     if ('metadata' in nft) {
       const imageUrl = nft['metadata']['image'];
 
+      if (!imageUrl) return <div className='renderError'>Not supported: {JSON.stringify(nft)}</div>;
+
       if (imageUrl.startsWith('ipfs://')) {
         nftData['image'] = `https://ipfs.io/ipfs/${imageUrl.split('//')[1]}`;
       }
@@ -100,6 +106,9 @@ function App() {
     else if ('externalDomainViewUrl' in nft) {
       
       const [_, data] = nft['externalDomainViewUrl'].split(',');
+
+      if (!data) return <div className='renderError'>Not supported: {JSON.stringify(nft)}</div>;
+
       const dataJson = JSON.parse(atob(data));
       nftData['image'] = dataJson['image'];
 
