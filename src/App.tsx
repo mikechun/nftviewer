@@ -54,7 +54,9 @@ function App() {
   } 
 
   const getNftMeta = async (address:string, tokenId: string) => {
-    const response = await fetch(`https://eth-mainnet.g.alchemy.com/${API_KEY}/v1/getNFTMetadata?contractAddress=${address}&tokenId=${tokenId}&tokenType=erc721`);
+    const throttled = throttle(fetch);
+
+    const response = await throttled(`https://eth-mainnet.g.alchemy.com/${API_KEY}/v1/getNFTMetadata?contractAddress=${address}&tokenId=${tokenId}&tokenType=erc721`);
     return response.json();
   }
 
